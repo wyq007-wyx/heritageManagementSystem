@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.InstitutionDao">
+	<resultMap type="com.bean.Institution" id="InstitutionResult">
+ 		<id property="wid" column="wid"></id>
+ 		<result property="name" column="name"></result>
+ 		<result property="manager" column="manager"></result>
+ 		<result property="tel" column="tel"></result>
+ 		<result property="email" column="email"></result>
+ 		<result property="addr" column="addr"></result>
+ 		<result property="type" column="type"></result>
+ 	</resultMap>
+	<!-- 查询所有单位 -->
+	<select id="selectAllInstitution" resultMap="InstitutionResult">
+		select * from institution
+	</select>
+	<!-- 根据id查询单位 -->
+	<select id="selectByWid" parameterType="Integer" resultMap="InstitutionResult">
+		select * from institution where wid=#{wid}
+	</select>
+	<!-- 根据name查询单位 -->
+	<select id="selectByName" parameterType="String" resultMap="InstitutionResult">
+		select * from institution where name=#{name}
+	</select>
+	<!-- 根据部分name查询单位 -->
+	<select id="selectByPartName" parameterType="String" resultMap="InstitutionResult">
+		select * from institution where name like #{checkname}
+	</select>
+	<!-- 删除一条单位记录 -->
+	<delete id="deleteInstitution" parameterType="Integer">
+		delete from institution where wid=#{wid}
+	</delete>
+	<!--增加一条单位记录-->
+	<insert id="addInstitution" useGeneratedKeys="true" keyProperty="wid">
+		insert into institution(name,manager,tel,email,addr,type)
+		values(#{name},#{manager},#{tel},#{email},#{addr},#{type});
+	</insert>
+	<!--更新记录-->
+	<update id="updateInstitution">
+		update institution
+		set 
+			manager=#{manager},
+			tel=#{tel},
+			email=#{email},
+			addr=#{addr},
+			type=#{type}
+		where wid=#{wid};
+	</update>
+</mapper> 

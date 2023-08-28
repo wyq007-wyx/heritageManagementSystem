@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SampleDao">
+	<resultMap type="com.bean.Sample" id="SampleResult">
+ 		<id property="sid" column="sid"></id>
+ 		<result property="samplename" column="samplename"></result>
+ 		<result property="belong" column="belong"></result>
+ 		<result property="findplace" column="findplace"></result>
+ 		<result property="findtime" column="findtime"></result>
+ 		<result property="material" column="material"></result>
+ 		<result property="ofyear" column="ofyear"></result>
+ 		<result property="person" column="person"></result>
+ 		<result property="logtime" column="logtime"></result>
+ 		<result property="image_url" column="image_url"></result>
+ 		<result property="open" column="open"></result>
+ 		<result property="borrow_state" column="borrow_state"></result>
+ 	</resultMap>
+ 	<!-- 查询所有标本 -->
+	<select id="selectAllSample" resultMap="SampleResult">
+		select * from sample
+	</select>
+	<!-- 查询所有标本 -->
+	<select id="findTotalCount" resultType="Integer">
+		select count(*) from sample where belong=#{belong}
+	</select>
+	<!-- 查询所有标本 -->
+	<select id="findPage" resultMap="SampleResult">
+		select * from sample where belong =#{belong}
+		limit #{index},#{number}
+	</select>
+	
+	<select id="findTotalCount2" resultType="Integer">
+		select count(*) from sample where belong=#{belong} 
+		and
+		(
+			samplename like #{samplename} or 
+			findplace like #{findplace} or 
+			material like #{material} 
+		)
+	</select>
+
+	<select id="findPage2" resultMap="SampleResult">
+		select * from sample where belong =#{belong}
+		and
+		(
+			samplename like #{samplename} or 
+			findplace like #{findplace} or 
+			material like #{material}
+		)
+		limit #{index},#{number}
+	</select>
+	<!-- 根据id查询标本 -->
+	<select id="selectBySid" parameterType="Integer" resultMap="SampleResult">
+		select * from sample where sid=#{sid}
+	</select>
+	
+	<!--模糊查询 -->
+	<select id="selectByContent" resultMap="SampleResult">
+		select * from sample 
+		where 
+		samplename like #{samplename} or 
+		findplace like #{findplace} or 
+		material like #{material} or 
+		belong like #{belong}
+	</select>
+	<!-- 根据name查询标本 -->
+	<select id="selectByName" parameterType="String" resultMap="SampleResult">
+		select * from sample where samplename=#{samplename}
+	</select>
+	<!-- 根据工作单位查询标本 -->
+	<select id="selectByWorkplace" parameterType="String" resultMap="SampleResult">
+		select * from sample where belong=#{workplace}
+	</select>
+	<!--增加一条记录-->
+	<insert id="addSample" useGeneratedKeys="true" keyProperty="sid">
+		insert into sample(samplename,belong,findplace,findtime,material,ofyear,person,description,logtime,image_url,open,borrow_state)
+		values(#{samplename},#{belong},#{findplace},#{findtime},#{material},#{ofyear},#{person},#{description},#{logtime},#{image_url},#{open},#{borrow_state});
+	</insert>
+	<!--更新记录-->
+	<update id="updateSample">
+		update sample
+		set 
+			findplace=#{findplace},
+			findtime=#{findtime},
+			material=#{material},
+			ofyear=#{ofyear},
+			person=#{person},
+			description=#{description},
+			logtime=#{logtime},
+			image_url=#{image_url}
+		where sid=#{sid};
+	</update>
+	<update id="updateOpen">
+		update sample
+		set 
+			open=#{open}
+		where sid=#{sid};
+	</update>
+	<update id="updateBorrowState">
+		update sample
+		set 
+			borrow_state=#{borrow_state}
+		where sid=#{sid};
+	</update>
+	<update id="updateSample2">
+		update sample
+		set 
+			findplace=#{findplace},
+			findtime=#{findtime},
+			material=#{material},
+			ofyear=#{ofyear},
+			person=#{person},
+			description=#{description},
+			logtime=#{logtime},
+			image_url=#{image_url},
+			open=#{open}
+		where sid=#{sid};
+	</update>
+	<!-- 删除一条标本记录 -->
+	<delete id="deleteSample" parameterType="Integer">
+		delete from sample where sid=#{sid}
+	</delete>
+</mapper>

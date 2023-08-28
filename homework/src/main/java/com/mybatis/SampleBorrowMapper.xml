@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SampleBorrowDao">
+	<resultMap type="com.bean.SampleBorrow" id="SampleBorrowResult">
+ 		<id property="bid" column="bid"></id>
+ 		<result property="sid" column="sid"></result>
+ 		<result property="belong" column="belong"></result>
+ 		<result property="wid" column="wid"></result>
+ 		<result property="borrow_time" column="borrow_time"></result>
+ 		<result property="back_time" column="back_time"></result>
+ 		<result property="reason" column="reason"></result>
+ 		<result property="person" column="person"></result>
+ 		<result property="plus" column="plus"></result>
+ 		<result property="tel" column="tel"></result>
+ 		<result property="check_state" column="check_state"></result>
+ 		<result property="borrow_workplace" column="borrow_workplace"></result>
+ 	</resultMap>
+	<!--增加一条记录-->
+	<insert id="addBorrow" useGeneratedKeys="true" keyProperty="bid">
+		insert into sample_borrow(sid,wid,borrow_workplace,belong,reason,person,plus,borrow_time,back_time,check_state,tel)
+		values(#{sid},#{wid},#{borrow_workplace},#{belong},#{reason},#{person},#{plus},#{borrow_time},#{back_time},#{check_state},#{tel});
+	</insert>
+	<select id="selectByCheckStateAndFrom" resultMap="SampleBorrowResult">
+		select * from sample_borrow
+		where check_state=#{check_state} and borrow_workplace=#{from}
+	</select>
+	<select id="selectByBid" resultMap="SampleBorrowResult">
+		select * from sample_borrow
+		where bid=#{bid}
+	</select>
+	<select id="selectByCheckStateAndSrc" resultMap="SampleBorrowResult">
+		select * from sample_borrow
+		where check_state=#{check_state} and belong=#{src}
+	</select>
+	<select id="selectByYear" resultMap="SampleBorrowResult">
+		select * from sample_borrow
+		where borrow_time like #{year} and belong=#{belong} and back_time is not null
+	</select>
+	<select id="selectByWorkplace" resultMap="SampleBorrowResult">
+		select * from sample_borrow
+		where belong=#{belong} and back_time is not null
+	</select>
+	<!--更新记录-->
+	<update id="updateBorrowState">
+		update sample_borrow
+		set 
+			check_state=#{borrow_state}
+		where bid=#{bid}
+	</update>
+	<update id="updateBorrow_time">
+		update sample_borrow
+		set 
+			borrow_time=#{borrow_time}
+		where bid=#{bid}
+	</update>
+	<update id="updateBack_time">
+		update sample_borrow
+		set 
+			back_time=#{back_time}
+		where bid=#{bid}
+	</update>
+	<!-- 删除一条标本记录 -->
+	<delete id="deleteBorrow" parameterType="Integer">
+		delete from sample_borrow where bid=#{bid}
+	</delete>
+</mapper>

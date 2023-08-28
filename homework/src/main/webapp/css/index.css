@@ -1,0 +1,63 @@
+html {
+    font-size: 15px;
+}
+
+/* .sub_body { */
+/*     background-color: white; */
+/*     display: flex; */
+/*     justify-content: center; */
+/*     align-items: center; */
+/*     min-height: 100vh; */
+/* } */
+.container1{
+	background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+h1 {
+    color: #e3e2e2;
+    font-family: Helvetica;
+    margin: 0;
+    padding: 0;
+    font-size: 8rem;
+    letter-spacing: -0.3rem;
+    position: relative;
+}
+
+h1::after{
+    content:attr(data-spotlight);
+    color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-clip-path: ellipse(100px 100px at 0% 50%);
+    clip-path: ellipse(100px 100px at 0% 50%);
+    animation: spotlight 5s infinite;
+    background-image:url("https://images.unsplash.com/photo-1569982175971-d92b01cf8694?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80") ;
+    background-size: 150%;
+    background-position: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+@keyframes spotlight {
+    0%{
+        -webkit-clip-path: ellipse(100px 100px at 0% 50%);
+        clip-path: ellipse(100px 100px at 0% 50%);
+    }
+    50%{
+        -webkit-clip-path: ellipse(100px 100px at 100% 50%);
+        clip-path: ellipse(100px 100px at 100% 50%);
+    }
+    100%{
+        -webkit-clip-path: ellipse(100px 100px at 0% 50%);
+        clip-path: ellipse(100px 100px at 0% 50%);
+    }
+}
+.container2 {
+    width: 100%;
+    height: 50px;
+}

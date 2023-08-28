@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserDao">
+	<resultMap type="com.bean.User" id="UserResult">
+ 		<id property="uid" column="uid"></id>
+ 		<result property="username" column="username"></result>
+ 		<result property="password" column="password"></result>
+ 		<result property="image_url" column="image_url"></result>
+ 		<result property="realname" column="realname"></result>
+ 		<result property="sex" column="sex"></result>
+ 		<result property="register_state" column="register_state"></result>
+ 		<result property="user_state" column="user_state"></result>
+ 		<result property="tel" column="tel"></result>
+ 		<result property="email" column="email"></result>
+ 		<result property="addr" column="addr"></result>
+ 		<result property="createtime" column="createtime"></result>
+ 		<result property="last_logintime" column="last_logintime"></result>
+ 		<result property="workplace" column="workplace"></result>
+ 	</resultMap>
+	<!-- 判断用户名和密码是否匹配 -->
+	<select id="userLogin"  resultMap="UserResult">
+		select 
+		user.uid,
+		user.username,
+		user.password,
+		user.image_url,
+		user.realname,
+		user.sex,
+		user.register_state,
+		user.user_state,
+		user.tel,
+		user.addr,
+		user.email,
+		user.createtime,
+		user.last_logintime,
+		user.workplace
+		from (user inner join user_role on user.uid=user_role.uid)
+		where user.username= #{username} and user.password= #{pwd} and rid =#{rid}
+	</select>
+	<!-- 根据username用户是否存在 -->
+	<select id="register" parameterType="String" resultMap="UserResult">
+		select * from user where username = #{username}
+	</select>
+	<select id="findUserByUsernameAndEmail"  resultMap="UserResult">
+		select * from user where username = #{username} and email=#{email}
+	</select>
+	<!-- 查询uid用户 -->
+	<select id="selectByUid" resultMap="UserResult">
+		select * from user where uid=#{uid}
+	</select>
+	<!-- 查询所有用户 -->
+	<select id="selectAllUser" resultMap="UserResult">
+		select * from user
+	</select>
+	<!-- 获取用户角色号 -->
+	<select id="getUserRole" parameterType="Integer" resultType="Integer">
+		select rid from user_role where uid=#{uid}
+	</select>
+	<!--增加一条游客记录-->
+	<insert id="addVisitor" useGeneratedKeys="true" keyProperty="uid">
+		insert into user(username,password,image_url,realname,sex,register_state,user_state,tel,email,addr,createtime,last_logintime)
+		values(#{username},#{password},#{image_url},#{realname},#{sex},#{register_state},#{user_state},#{tel},#{email},#{addr},#{createtime},#{last_logintime});
+	</insert>
+	<!--增加一条工作人员记录-->
+	<insert id="addStaff" useGeneratedKeys="true" keyProperty="uid">
+		insert into user(username,password,image_url,workplace,realname,sex,register_state,user_state,tel,email,addr,createtime,last_logintime)
+		values(#{username},#{password},#{image_url},#{workplace},#{realname},#{sex},#{register_state},#{user_state},#{tel},#{email},#{addr},#{createtime},#{last_logintime});
+	</insert>
+	<!--增加一条用户角色记录-->
+	<insert id="addUserRole">
+		insert into user_role(uid,rid) values(#{uid},#{rid})
+	</insert>
+	<!--更新记录-->
+	<update id="updateUser">
+		update user
+		set 
+			sex=#{sex},
+			realname=#{realname},
+			tel=#{tel},
+			email=#{email},
+			addr=#{addr},
+			workplace=#{workplace}
+		where uid=#{uid}
+	</update>
+	<!--更新记录-->
+	<update id="updateUserImage">
+		update user
+		set 
+			image_url=#{image_url}
+		where uid=#{uid}
+	</update>
+	<!--更新记录-->
+	<update id="updateUserPwd">
+		update user
+		set 
+			password=#{password}
+		where username=#{username}
+	</update>
+	<!--更新记录-->
+	<update id="updateUserState">
+		update user
+		set 
+			user_state=#{user_state}
+		where uid=#{uid}
+	</update>
+	<update id="updateLast_logintime">
+		update user
+		set 
+			last_logintime=#{last_logintime}
+		where uid=#{uid}
+	</update>
+	<!-- 删除一条用户记录 -->
+	<delete id="deleteUser" parameterType="Integer">
+		delete from user where uid=#{uid}
+	</delete>
+	<!-- 删除用户角色记录 -->
+	<delete id="deleteUserRole" parameterType="Integer">
+		delete from user_role where uid=#{uid}
+	</delete>
+</mapper> 
